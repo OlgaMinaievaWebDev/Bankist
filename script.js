@@ -80,6 +80,13 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+//calculating and displaying balance
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+calcDisplayBalance(account1.movements);
+
 //create username property in the object and make it first letters of the name
 const createUserNames = function (accs) {
   accs.forEach(acc => {
@@ -93,7 +100,8 @@ const createUserNames = function (accs) {
 
 console.log(createUserNames(accounts));
 console.log(accounts);
-/////////////////////////////////////////////////
+
+//////////////////////c///////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
@@ -103,6 +111,33 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
+// filter method
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
+const deposits = movements.filter(mov => mov > 0);
+console.log(movements);
+console.log(deposits);
+
+const depositFor = [];
+for (const mov of movements) {
+  if (mov > 0) depositFor.push(mov);
+}
+console.log(depositFor);
+
+const withdrawals = movements.filter(mov => mov < 0);
+console.log(withdrawals);
+
+const withdrawFor = [];
+for (const mov of movements) {
+  if (mov < 0) withdrawFor.push(mov);
+}
+console.log(withdrawFor);
+
+const balance = movements.reduce((acc, cur) => acc + cur, 0);
+console.log(balance);
+let balance2 = 0;
+for (const mov of movements) {
+  balance2 += mov;
+}
+console.log(balance2);
 /////////////////////////////////////////////////
