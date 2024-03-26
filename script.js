@@ -73,7 +73,7 @@ const displayMovements = function (movements) {
       i + 1
     } ${type}</div>
         
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -83,9 +83,30 @@ displayMovements(account1.movements);
 //calculating and displaying balance
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance}€`;
 };
 calcDisplayBalance(account1.movements);
+
+//
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(int => int >= 1)
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
 
 //create username property in the object and make it first letters of the name
 const createUserNames = function (accs) {
@@ -140,4 +161,52 @@ for (const mov of movements) {
   balance2 += mov;
 }
 console.log(balance2);
+
+// Maximum value
 /////////////////////////////////////////////////
+const max = movements.reduce((acc, mov) => {
+  if (acc > mov) return acc;
+  else return mov;
+}, movements.at(0));
+console.log(max);
+
+const arr = [5, 2, 4, 1, 15, 8, 3];
+const arr2 = [16, 6, 10, 5, 6, 1, 4];
+
+const calcAges = function (arr) {
+  const humanAge = arr.map(age => {
+    if (age <= 2) return 2 * age;
+    else return 16 + age * 4;
+  });
+  console.log(humanAge);
+  const elderDog = humanAge.filter(age => age >= 18);
+  console.log(elderDog);
+
+  const averageAge = elderDog.reduce((acc, curr) => {
+    return Math.floor((acc + curr) / arr.length);
+  }, 0);
+  console.log(averageAge);
+  return averageAge;
+};
+
+const pipeline = arrs =>
+  arrs
+    .map(arr => (arr <= 2 ? 2 * arr : 16 + arr * 4))
+    .filer(arr => arr >= 18)
+    .reduce((acc, arr) => {
+      Math.floor((acc + arr) / arr.length);
+    }, 0);
+
+pipeline(arr);
+console.log(average);
+calcAges([5, 2, 4, 1, 15, 8, 3]);
+calcAges([16, 6, 10, 5, 6, 1, 4]);
+
+const eurToUSD = 1.1;
+
+// PIPELINE
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUSD)
+  .reduce((acc, cur) => acc + cur, 0);
+console.log(totalDepositsUSD.toFixed(0));
